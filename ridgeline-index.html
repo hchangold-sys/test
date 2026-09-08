@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ridgeline Letterpress — 활판인쇄 스튜디오</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #E7E2D4;
+    --paper-deep: #DCD5C2;
+    --ink: #211D19;
+    --indigo: #2C3A62;
+    --brass: #A9824C;
+    --red: #7A2E27;
+    --line: rgba(33,29,25,0.18);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+  }
+  ::selection{background:var(--brass); color:var(--paper);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  a{color:inherit;}
+  h1,h2,h3{font-family:'Fraunces', serif; margin:0; font-weight:500;}
+
+  .wrap{max-width:1120px; margin:0 auto; padding:0 32px;}
+
+  /* ---------- Texture layer ---------- */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:5;
+    opacity:0.05; mix-blend-mode:multiply;
+    background-image:
+      radial-gradient(circle at 20% 30%, #000 0.5px, transparent 0.6px),
+      radial-gradient(circle at 60% 70%, #000 0.5px, transparent 0.6px),
+      radial-gradient(circle at 80% 20%, #000 0.5px, transparent 0.6px);
+    background-size: 3px 3px, 5px 5px, 4px 4px;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:10;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px;
+    max-width:1120px; margin:0 auto;
+  }
+  .wordmark{
+    font-family:'Fraunces', serif; font-size:20px; letter-spacing:0.01em;
+  }
+  .nav-links{display:flex; gap:28px; font-size:14px;}
+  .nav-links a{text-decoration:none; border-bottom:1px solid transparent; padding-bottom:2px; transition:border-color .2s ease;}
+  .nav-links a:hover, .nav-links a:focus-visible{border-color:var(--ink);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:96px 32px 80px;
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap:48px;
+    align-items:center;
+    max-width:1120px; margin:0 auto;
+  }
+  .hero h1{
+    font-size:clamp(44px, 6.4vw, 84px);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+  }
+  .hero .lede{
+    margin-top:24px; max-width:46ch;
+    font-size:18px; color:#3d3833;
+  }
+  .hero .meta{
+    margin-top:36px; display:flex; gap:32px; font-size:14px; color:#5c564d;
+  }
+  .hero .meta div{border-left:1px solid var(--line); padding-left:12px;}
+
+  /* Press-impression mark: a stamped circular seal that "presses" in on load */
+  .seal-stage{
+    display:flex; align-items:center; justify-content:center;
+  }
+  .seal{
+    width:280px; height:280px;
+    transform: scale(1.4) rotate(-6deg);
+    opacity:0;
+    animation: press 900ms cubic-bezier(.2,.9,.3,1) 200ms forwards;
+  }
+  @keyframes press{
+    0%{ transform:scale(1.5) rotate(-8deg); opacity:0; }
+    60%{ transform:scale(0.97) rotate(-3deg); opacity:1; }
+    100%{ transform:scale(1) rotate(-3deg); opacity:1; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .seal{ animation:none; opacity:1; transform:scale(1) rotate(-3deg); }
+  }
+
+  /* ---------- Section headings ---------- */
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    border-top:1px solid var(--line);
+    padding-top:20px; margin-bottom:44px;
+  }
+  .section-head h2{font-size:clamp(28px,3.4vw,40px);}
+  .section-head .count{font-size:14px; color:#5c564d;}
+
+  section{padding:64px 32px;}
+
+  /* ---------- Work grid ---------- */
+  .work-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border:1px solid var(--line);
+  }
+  .plate{
+    background:var(--paper);
+    padding:32px 28px 28px;
+    min-height:240px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    position:relative;
+  }
+  .plate .tag{
+    font-size:13px; color:var(--brass); font-family:'Fraunces', serif; font-style:italic;
+  }
+  .plate h3{font-size:22px; margin-top:14px; line-height:1.2;}
+  .plate p{font-size:14px; color:#4a453f; margin-top:10px;}
+  .plate .ink-swatch{
+    width:34px; height:34px; border-radius:50%;
+    margin-bottom:16px;
+  }
+
+  /* ---------- Process ---------- */
+  .process{
+    display:grid; grid-template-columns: 0.7fr 1.3fr; gap:56px;
+  }
+  .process-list{border-top:1px solid var(--line);}
+  .step{
+    display:grid; grid-template-columns: 64px 1fr;
+    padding:26px 0; border-bottom:1px solid var(--line);
+  }
+  .step .num{font-family:'Fraunces', serif; font-style:italic; color:var(--brass); font-size:18px;}
+  .step h3{font-size:19px;}
+  .step p{font-size:14px; color:#4a453f; margin-top:8px; max-width:52ch;}
+
+  .process-note{
+    background:var(--paper-deep);
+    border:1px solid var(--line);
+    padding:36px;
+    align-self:start;
+  }
+  .process-note h3{font-size:24px; margin-bottom:14px;}
+  .process-note p{font-size:15px; color:#3d3833;}
+  .process-note .stamp{
+    margin-top:28px; padding-top:20px; border-top:1px dashed var(--line);
+    font-size:13px; color:#5c564d;
+  }
+
+  /* ---------- Order / CTA ---------- */
+  .cta-band{
+    background:var(--ink); color:var(--paper);
+  }
+  .cta-inner{
+    display:grid; grid-template-columns: 1.2fr 0.8fr; gap:40px; align-items:end;
+  }
+  .cta-band h2{color:var(--paper); font-size:clamp(30px,4vw,48px); max-width:16ch;}
+  .cta-band p{color:#cfc9ba; font-size:15px; margin-top:16px; max-width:44ch;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--paper); color:var(--ink);
+    padding:14px 24px; font-size:15px;
+    text-decoration:none; border:1px solid var(--paper);
+    transition: background .2s ease, color .2s ease;
+    font-weight:500;
+  }
+  .btn:hover, .btn:focus-visible{background:transparent; color:var(--paper);}
+
+  /* ---------- Footer ---------- */
+  footer{padding:40px 32px 56px;}
+  .footer-inner{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    border-top:1px solid var(--line); padding-top:24px;
+    font-size:13px; color:#5c564d;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px){
+    .hero{grid-template-columns:1fr; padding-top:64px;}
+    .seal-stage{order:-1;}
+    .seal{width:180px; height:180px;}
+    .work-grid{grid-template-columns:1fr;}
+    .process{grid-template-columns:1fr;}
+    .cta-inner{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .footer-inner{flex-direction:column; align-items:flex-start; gap:8px;}
+  }
+
+  :focus-visible{outline:2px solid var(--indigo); outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header>
+  <div class="nav">
+    <div class="wordmark">Ridgeline Letterpress</div>
+    <nav class="nav-links">
+      <a href="#work">작업</a>
+      <a href="#process">인쇄 과정</a>
+      <a href="#order">주문 문의</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero" style="padding-left:0; padding-right:0;">
+    <div>
+      <h1>납활자로<br>눌러 찍은<br>말들.</h1>
+      <p class="lede">종이 위에 물리적으로 새겨지는 인쇄. 청첩장, 명함, 소량 포스터를 100년 넘은 활판기로 한 장씩 찍습니다.</p>
+      <div class="meta">
+        <div>설립 1994</div>
+        <div>서울 · 을지로</div>
+        <div>연 400장 한정 생산</div>
+      </div>
+    </div>
+    <div class="seal-stage">
+      <svg class="seal" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ridgeline Letterpress 원형 인장">
+        <circle cx="100" cy="100" r="96" fill="none" stroke="#2C3A62" stroke-width="1.5"/>
+        <circle cx="100" cy="100" r="82" fill="none" stroke="#2C3A62" stroke-width="1"/>
+        <path id="circlePath" d="M 100,100 m -68,0 a 68,68 0 1,1 136,0 a 68,68 0 1,1 -136,0" fill="none"/>
+        <text font-family="Fraunces, serif" font-size="12.5" fill="#2C3A62" letter-spacing="3">
+          <textPath href="#circlePath" startOffset="2%">RIDGELINE · LETTERPRESS · SEOUL · EST 1994 ·</textPath>
+        </text>
+        <text x="100" y="94" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="30" fill="#7A2E27">Rg</text>
+        <text x="100" y="118" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="9" fill="#2C3A62" letter-spacing="2">HAND-SET · HAND-PULLED</text>
+      </svg>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head">
+      <h2>최근 작업</h2>
+      <div class="count">여섯 판 중 여섯</div>
+    </div>
+    <div class="work-grid">
+      <div class="plate">
+        <div>
+          <div class="ink-swatch" style="background:var(--red);"></div>
+          <div class="tag">청첩장</div>
+          <h3>소나무와 소나무</h3>
+        </div>
+        <p>두 겹 면지에 딥 레드 잉크. 200부 한정, 24포인트 코튼지.</p>
+      </div>
+      <div class="plate">
+        <div>
+          <div class="ink-swatch" style="background:var(--indigo);"></div>
+          <div class="tag">명함</div>
+          <h3>서점 '겨를'</h3>
+        </div>
+        <p>1도 인디고, 데번지 32포인트. 모서리는 손으로 라운딩.</p>
+      </div>
+      <div class="plate">
+        <div>
+          <div class="ink-swatch" style="background:var(--brass);"></div>
+          <div class="tag">포스터</div>
+          <h3>동네책방 주간</h3>
+        </div>
+        <p>목판 대형 활자 조판, 브라스 잉크 위 2도 오버프린트.</p>
+      </div>
+      <div class="plate">
+        <div>
+          <div class="ink-swatch" style="background:var(--ink);"></div>
+          <div class="tag">스테이셔너리</div>
+          <h3>낱장 레터헤드</h3>
+        </div>
+        <p>먹 1도. 얇은 결의 일본산 종이 위 깊은 인압.</p>
+      </div>
+      <div class="plate">
+        <div>
+          <div class="ink-swatch" style="background:var(--red);"></div>
+          <div class="tag">메뉴판</div>
+          <h3>식당 '정온'</h3>
+        </div>
+        <p>계절마다 새로 조판. 레드 1도, 매트 크림지.</p>
+      </div>
+      <div class="plate">
+        <div>
+          <div class="ink-swatch" style="background:var(--indigo);"></div>
+          <div class="tag">청첩장</div>
+          <h3>여름의 초대</h3>
+        </div>
+        <p>봉투까지 함께 인쇄. 인디고 1도, 왁스 실링 별도 제작.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="section-head">
+      <h2>인쇄 과정</h2>
+      <div class="count">문의부터 배송까지</div>
+    </div>
+    <div class="process">
+      <div class="process-list">
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <h3>문의와 조판 상담</h3>
+            <p>원하는 문구, 수량, 종이 질감을 함께 정합니다. 활자로 표현 가능한 크기와 두께를 미리 안내드려요.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <h3>손 조판</h3>
+            <p>납활자를 한 자씩 골라 판을 짭니다. 서체와 자간은 이 단계에서 실물로 확인할 수 있습니다.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <h3>시쇄 확인</h3>
+            <p>실제 종이에 한 장을 먼저 찍어 색과 인압을 확인한 뒤 승인을 받습니다.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <div>
+            <h3>본 인쇄</h3>
+            <p>1900년대 플라텐 활판기로 한 장씩 눌러 찍습니다. 하루 생산량은 종이 상태에 따라 달라집니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="process-note">
+        <h3>왜 활판인쇄인가</h3>
+        <p>디지털 인쇄는 잉크를 얹지만, 활판은 종이를 눌러 자국을 남깁니다. 빛을 비스듬히 받으면 글자마다 그림자가 생기는 이유입니다. 속도보다 자국을, 균일함보다 손의 흔적을 남기는 방식을 씁니다.</p>
+        <div class="stamp">평균 제작 기간 · 2~3주 &nbsp;|&nbsp; 최소 수량 · 50매</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<section class="cta-band" id="order">
+  <div class="wrap cta-inner">
+    <div>
+      <h2>다음 판을 함께 짜보시겠어요.</h2>
+      <p>청첩장이든 명함이든, 활자로 옮길 문구가 있다면 편하게 문의해 주세요. 견적과 종이 샘플을 보내드립니다.</p>
+    </div>
+    <div>
+      <a class="btn" href="mailto:studio@ridgeline-press.example">문의 메일 보내기</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>Ridgeline Letterpress · 서울시 중구 을지로</div>
+    <div>월–금 11:00–18:00 · 방문은 예약제</div>
+  </div>
+</footer>
+
+</body>
+</html>
